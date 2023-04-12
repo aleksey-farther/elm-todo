@@ -70,10 +70,10 @@ update msg model =
 
 todoItem : ToDo -> Html Msg
 todoItem todo =
-    div [ style "display" "flex", style "gap" "5px", style "margin-top" "15px" ]
+    div [ style "margin-top" "15px" ]
         [ div []
             [ text todo.message ]
-        , div []
+        , div [ style "display" "flex", style "gap" "5px" ]
             [ div []
                 [ text
                     (if todo.done == True then
