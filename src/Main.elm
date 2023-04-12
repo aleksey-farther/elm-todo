@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Html exposing (Html, button, div, input, text)
-import Html.Attributes exposing (placeholder, value)
+import Html.Attributes exposing (placeholder, style, value)
 import Html.Events exposing (onClick, onInput)
 
 
@@ -33,6 +33,7 @@ init =
 type Msg
     = Add String
     | Remove Int
+    | Done Int
     | ChangeMessage String
 
 
@@ -49,25 +50,42 @@ update msg model =
         Remove id ->
             { model | todos = List.filter (\m -> m.id /= id) model.todos }
 
+        Done id ->
+            { model
+                | todos =
+                    List.map
+                        (\m ->
+                            if m.id == id then
+                                { m | done = True }
+
+                            else
+                                m
+                        )
+                        model.todos
+            }
+
         ChangeMessage message ->
             { model | message = message }
 
 
 todoItem : ToDo -> Html Msg
 todoItem todo =
-    div []
+    div [ style "display" "flex", style "gap" "5px", style "margin-top" "15px" ]
         [ div []
             [ text todo.message ]
         , div []
-            [ text
-                (if todo.done == True then
-                    "Done"
+            [ div []
+                [ text
+                    (if todo.done == True then
+                        "Done"
 
-                 else
-                    "Not Done"
-                )
+                     else
+                        "Not Done"
+                    )
+                ]
+            , button [ onClick (Done todo.id) ] [ text "Mark as done" ]
+            , button [ onClick (Remove todo.id) ] [ text "Remove" ]
             ]
-        , button [ onClick (Remove todo.id) ] [ text "Remove" ]
         ]
 
 
