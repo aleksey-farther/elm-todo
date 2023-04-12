@@ -44,7 +44,7 @@ update msg model =
                 model
 
             else
-                { model | todos = List.append model.todos [ { id = List.length model.todos, message = message, done = False } ] }
+                { model | todos = List.append model.todos [ { id = List.length model.todos, message = message, done = False } ], message = "" }
 
         Remove id ->
             { model | todos = List.filter (\m -> m.id /= id) model.todos }
