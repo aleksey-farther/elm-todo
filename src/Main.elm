@@ -4,6 +4,7 @@ import Browser
 import Html exposing (Html, button, div, input, text)
 import Html.Attributes exposing (placeholder, style, value)
 import Html.Events exposing (onClick, onInput)
+import Json.Encode as Encode
 
 
 main =
@@ -35,6 +36,20 @@ type Msg
     | Remove Int
     | Done Int
     | ChangeMessage String
+
+
+encodeToDo : ToDo -> Encode.Value
+encodeToDo todo =
+    Encode.object
+        [ ( "id", Encode.int todo.id )
+        , ( "message", Encode.string todo.message )
+        , ( "done", Encode.bool todo.done )
+        ]
+
+
+encodeToDos : List ToDo -> String
+encodeToDos todos =
+    Encode.encode 0 (encodeToDo todos)
 
 
 update : Msg -> Model -> Model
